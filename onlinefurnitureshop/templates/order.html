@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-50">
+        <div class="container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% if error %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            <h4>Order Details
+                <span class="price" style="color:black">
+                    <i class="fa fa-shopping-cart"></i>
+                    <b>{{ cart_items|length }}</b>
+                </span>
+            </h4>
+            <table>
+                <tr>
+                    <th style="padding-right: 77px;">Product</th>
+                    <th style="padding-right: 77px;">Image</th>
+                    <th style="padding-right: 77px;">Color</th>
+                    <th style="padding-right: 77px;">Size</th>
+                    <th style="padding-right: 77px;">Quantity</th>
+                    <th style="padding-right: 77px;">Price</th>
+                    <th style="padding-right: 77px;">Order Date</th>
+                </tr>
+                {% for item in cart_items %}
+                <tr>
+                    <td style="padding-right: 77px;">{{ item.product.title }}</td>
+                    <td style="padding-right: 77px;"><img src="{{ item.product.images.first.image.url }}" style="max-height: 50px;"></td>
+                    <td style="padding-right: 77px;">{{ item.colour.colour }}</td>
+                    <td style="padding-right: 77px;">{{ item.size.size }}</td>
+                    <td style="padding-right: 77px;">{{ item.quantity }}</td>
+                    <td style="padding-right: 77px;">{{ item.product.get_discounted_price }} Rs</td>
+                    <td style="padding-right: 77px;">{{ created_at }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            
+            <hr>
+            <p>Total <span class="price" style="color:black"><b>{{ total_amount }} Rs</b></span></p>
+        </div>
+    </div>
+
+    <div class="col-50">
+        <div class="container">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-25">
+                        <h3>User Details</h3>
+                        <label for="fname"><i class="fa fa-user"></i> Full Name: <span>{{ cart.user.get_full_name }}</span></label>
+                        <label for="email"><i class="fa fa-envelope"></i> Email: <span>{{ cart.user.email }}</span></label>
+                        <label for="adr"><i class="fa fa-address-card-o"></i> Address: <span>{{ cart.user.profile.address }}</span></label>
+                        <label for="city"><i class="fa fa-institution"></i> City: <span>{{ cart.user.profile.city }}</span></label>
+
+                    </div>
+                </div>
+                <br>
+                <button type="submit" class="confirm-btn">Confirm Order</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container-wide {
+        width: 70%;
+        float: left;
+        padding: 20px;
+    }
+    .container-narrow {
+        width: 30%;
+        float: right;
+        padding: 20px;
+    }
+    .order-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .order-table th, .order-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }   
+    .order-table th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #f2f2f2;
+        color: black;
+    }
+    .order-table img {
+        max-height: 50px;
+    }
+    .alert {
+        margin-bottom: 10px;
+        padding: 15px;
+        color: white;
+    }
+    .alert-danger {
+        background-color: red;
+    }
+    .confirm-btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px 20px;
+        border: none;
+        cursor: pointer;
+    }
+    .confirm-btn:hover {
+        background-color: #45a049;
+    }
+</style>
+
+{% endblock %}

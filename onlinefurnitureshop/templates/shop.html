@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+
+{% block content %}
+  <section id="product1" class="section-p1">
+    <h1 style="text-align:center;">{{category}}</h1>
+      <div class="pro-container">
+          {% for product in page_obj %}
+          <div class="pro">
+              <a href="/shop/product/{{ product.product_id }}">
+                  {% if product.images.all %}
+                  <img src="{{ product.images.first.image.url }}" alt="{{ product.title }}" />
+                  {% else %}
+                  <img src="{% static 'img/products/default.jpg' %}" alt="Default Image" />
+                  {% endif %}
+              </a>
+              <div class="des">
+                  <h5>{{ product.title }}</h5>
+                  <h4>{{ product.price }} Rs</h4>
+                  {% if product.discount %}
+                  <p class="discount-text">Discount: {{ product.discount }}</p>
+                  {% endif %}
+              </div>
+              <a href="/shop/product/{{ product.product_id }}"><i class="fal fa-shopping-cart cart"></i></a>
+          </div>
+          {% endfor %}
+      </div>
+  </section>
+
+  <section id="pagination" class="section-p1" style="text-align:center;">
+      <div class="pagination">
+
+          {% if page_obj.has_previous %}
+          <a href="?{% if category %}category={{ category }}&{% endif %}page=1">&laquo; First</a>
+          <a href="?{% if category %}category={{ category }}&{% endif %}page={{ page_obj.previous_page_number }}">&lsaquo; Previous</a>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+          <a href="?{% if category %}category={{ category }}&{% endif %}page={{ num }}" class="current-page">{{ num }}</a>
+          {% else %}
+          <a href="?{% if category %}category={{ category }}&{% endif %}page={{ num }}">{{ num }}</a>
+          {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+          <a href="?{% if category %}category={{ category }}&{% endif %}page={{ page_obj.next_page_number }}">Next &rsaquo;</a>
+          <a href="?{% if category %}category={{ category }}&{% endif %}page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+          {% endif %}
+      </div>
+  </section>
+
+  <style>
+    .pagination {
+        justify-content: center;
+        align-items: center;
+    }
+  </style>
+{% endblock %}
+

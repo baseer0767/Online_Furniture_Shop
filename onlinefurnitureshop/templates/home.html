@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% load static %}
+  
+{% block content %}
+  <section id="feature" class="section-p1">
+      <div class="fe-box">
+          <img src="{% static 'img/features/f1.png' %}" alt="" />
+          <h6>Free Shipping</h6>
+      </div>
+      <div class="fe-box">
+          <img src="{% static 'img/features/f2.png' %}" alt="" />
+          <h6>Online Order</h6>
+      </div>
+      <div class="fe-box">
+          <img src="{% static 'img/features/f3.png' %}" alt="" />
+          <h6>Save Money</h6>
+      </div>
+      <div class="fe-box">
+          <img src="{% static 'img/features/f4.png' %}" alt="" />
+          <h6>Cash On Delivery</h6>
+      </div>
+      <div class="fe-box">
+          <img src="{% static 'img/features/f5.png' %}" alt="" />
+          <h6>Happy Sell</h6>
+      </div>
+      <div class="fe-box">
+          <img src="{% static 'img/features/f6.png' %}" alt="" />
+          <h6>Support</h6>
+      </div>
+  </section>
+  
+  <div id="carouselExampleCaptions" class="carousel slide pb-3" data-bs-ride="carousel">
+      <h2 style="padding: 7px; text-align:center;">Discounted Items</h2>
+      <div class="carousel-indicators">
+          {% for product in products %}
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+          {% endfor %}
+      </div>
+      <div class="carousel-inner">
+          {% for product in products %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+              <img src="{{ product.images.first.image.url }}" class="d-block w-100" alt="{{ product.title }}">
+              <div class="carousel-caption d-none d-md-block">
+                  <h3 style='color:black'>{{ product.title }}</h3>
+                  {% if product.discount %}
+                  <h1 style="color:orange;font-weight: bold">{{ product.discount }}% OFF</h1>
+                  {% endif %}
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+      </button>
+  </div>
+  
+  <section id="product1" class="section-p1">
+      <h2>HOT Products</h2>
+      <div class="pro-container">
+          {% for product in hot_products %}
+          <div class="pro">
+              <a href="/shop/product/{{ product.product_id }}">
+                  {% if product.images.all %}
+                  <img src="{{ product.images.first.image.url }}" alt="{{ product.title }}" />
+                  {% else %}
+                  <img src="{% static 'img/products/default.jpg' %}" alt="Default Image" />
+                  {% endif %}
+              </a>
+              <div class="des">
+                  <h4>{{ product.title }}</h4>
+                  <h4>{{ product.price }} Rs</h4>
+              </div>
+              <a href="/shop/product/{{ product.product_id }}"><i class="fal fa-shopping-cart cart"></i></a>
+          </div>
+          {% endfor %}
+      </div>
+  </section>
+  
+  <style>
+    .carousel-item img {
+        max-width: 90%;
+        max-height: 700px; /* Adjust the maximum height as per your design */
+        display: block;
+        margin: auto; /* Center align the images horizontally */
+    }
+    h2 {
+        text-decoration: underline;
+    }
+  </style>
+{% endblock %}
+  

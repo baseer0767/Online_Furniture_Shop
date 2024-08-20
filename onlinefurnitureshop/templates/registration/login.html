@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+
+<form method="post" class="mt-4">
+    {% csrf_token %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Login</h2>
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        <h5 class="text-center mt-3">Don't have an account? <a href="{% url 'signup' %}">Register here</a></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+{% endblock  %} 

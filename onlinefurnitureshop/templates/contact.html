@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  
+
+  <!-- bhai ye hai bawal -->
+  <section id="form-details">
+    <form method="post">
+      {% csrf_token %}
+      <h2>We love to hear from you</h2>
+      <textarea name="message" placeholder="Your Message"></textarea>
+      <a href="{% url 'home'  %}"><button type="submit" class="normal">Submit</button></a>
+  </form>
+
+   <div class="people">
+    <div>
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4GcM5oHBxq5MXq6C4gFEY3KBTsKapINJmSQ&s"  alt="">
+     <p><samp>Saif</samp>, Senior DBMS Engineer <br> Phone: +92 321 3856601 <br> Email: abc@example.com</p>
+    </div>
+    
+   </div>
+  </section>
+
+{% endblock  %}

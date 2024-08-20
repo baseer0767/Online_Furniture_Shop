@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+
+{% load static %}
+
+{% block content %}
+    <section id="prodetails" class="section-p1">
+        <div class="single-pro-image">
+            <img src="{% if product.images.all %}{{ product.images.first.image.url }}{% else %}{% static 'img/products/default.jpg' %}{% endif %}" width="100%" id="MainImg" alt="{{ product.title }}">
+            <div class="small-img-group" style="padding: 10px;">
+                {% for image in product.images.all %}
+                <div class="small-img-col">
+                    <img src="{{ image.image.url }}" width="100%" class="small-img" alt="{{ product.title }}" onclick="myFunction()">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="single-pro-details">
+            <h4>{{ product.title }}</h4>
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    {{ form.errors.quantity }}
+                </div>
+            {% endif %}
+            <form method="post" action="{% url 'add_to_cart' product.product_id %}">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                <label for="size">Select Size</label>
+                {{ form.size }}
+                <label for="colour">Select Color</label>
+                {{ form.colour }}
+                <label for="quantity">Quantity</label>
+                {{ form.quantity }}
+                <button type="submit" class="normal">Add To Cart</button>
+            </form>
+            <h4 style="padding-top: 15px;">
+                {% if product.discount %}
+                    <del>{{ product.price }} Rs</del> {{ product.get_discounted_price }} Rs each
+                {% else %}
+                    {{ product.price }} Rs each
+                {% endif %}
+            </h4>
+            <h4>Total: <span id="total_price">{{ product.get_discounted_price }}</span> Rs</h4>
+            <h4 style="padding: 10px;">{{ product.description }}</h4>
+        </div>
+    </section>
+    <script>
+        const quantityField = document.querySelector('input[name="quantity"]');
+        const totalPriceField = document.getElementById('total_price');
+        const productPrice = {{ product.get_discounted_price }};
+
+        quantityField.addEventListener('input', function() {
+            const quantity = parseInt(this.value);
+            if (!isNaN(quantity) && quantity > 0) {
+                totalPriceField.textContent = (productPrice * quantity).toFixed(2);
+            } else {
+                totalPriceField.textContent = productPrice.toFixed(2);
+            }
+        });
+    </script>
+{% endblock %}
